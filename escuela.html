@@ -1,21 +1,69 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Escuela</title></head>
-<body>
-<h1>Escuela</h1>
-<input id="m" placeholder="Materia">
-<button onclick="add()">Agregar</button>
-<ul id="list"></ul>
-<script>
-let data=JSON.parse(localStorage.getItem('mat'))||[];
-function add(){
-let v=document.getElementById('m').value;
-data.push(v);
-localStorage.setItem('mat',JSON.stringify(data));
-render();
-}
-function render(){
-document.getElementById('list').innerHTML=data.map(x=>'<li>'+x+'</li>').join('');
-}
-render();
-</script>
-</body></html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escuela - Mi Admin</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">🎓 Escuela</h1>
+            <a href="dashboard.html" class="bg-gray-500 hover:bg-gray-600 px-4 py-2 rounded-lg font-semibold">Atrás</a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex gap-2 mb-6">
+                <input 
+                    id="m" 
+                    type="text"
+                    placeholder="Nombre de la materia..."
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onkeypress="if(event.key==='Enter') add()"
+                >
+                <button 
+                    onclick="add()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition"
+                >
+                    ➕ Agregar
+                </button>
+            </div>
+
+            <ul id="list" class="space-y-2"></ul>
+        </div>
+    </main>
+
+    <script>
+        let data=JSON.parse(localStorage.getItem('mat'))||[];
+        
+        function add(){
+            let v=document.getElementById('m').value.trim();
+            if(v==='') return;
+            data.push(v);
+            localStorage.setItem('mat',JSON.stringify(data));
+            document.getElementById('m').value='';
+            render();
+        }
+
+        function deleteMat(index){
+            data.splice(index,1);
+            localStorage.setItem('mat',JSON.stringify(data));
+            render();
+        }
+
+        function render(){
+            document.getElementById('list').innerHTML=data.map((x,i)=>
+                `<li class="bg-blue-50 p-3 rounded-lg flex justify-between items-center">
+                    <span>📚 ${x}</span>
+                    <button onclick="deleteMat(${i})" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm">❌</button>
+                </li>`
+            ).join('');
+        }
+        render();
+    </script>
+</body>
+</html>

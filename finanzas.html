@@ -1,21 +1,84 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Finanzas</title></head>
-<body>
-<h1>Finanzas</h1>
-<input id="c" placeholder="Concepto">
-<input id="a" type="number" placeholder="Cantidad">
-<button onclick="add()">Agregar</button>
-<ul id="list"></ul>
-<script>
-let data=JSON.parse(localStorage.getItem('fin'))||[];
-function add(){
-data.push(document.getElementById('c').value+' $'+document.getElementById('a').value);
-localStorage.setItem('fin',JSON.stringify(data));
-render();
-}
-function render(){
-document.getElementById('list').innerHTML=data.map(x=>'<li>'+x+'</li>').join('');
-}
-render();
-</script>
-</body></html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanzas - Mi Admin</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">💰 Finanzas</h1>
+            <a href="dashboard.html" class="bg-gray-500 hover:bg-gray-600 px-4 py-2 rounded-lg font-semibold">Atrás</a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+                <input 
+                    id="c" 
+                    type="text"
+                    placeholder="Concepto..."
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                <input 
+                    id="a" 
+                    type="number"
+                    placeholder="Cantidad $"
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                <button 
+                    onclick="add()"
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition"
+                >
+                    ➕ Agregar
+                </button>
+            </div>
+
+            <div class="mb-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                <p class="text-lg font-bold">Total: $<span id="total">0.00</span></p>
+            </div>
+
+            <ul id="list" class="space-y-2"></ul>
+        </div>
+    </main>
+
+    <script>
+        let data=JSON.parse(localStorage.getItem('fin'))||[];
+        
+        function add(){
+            let c=document.getElementById('c').value.trim();
+            let a=parseFloat(document.getElementById('a').value);
+            if(c==='' || isNaN(a) || a<=0) return;
+            data.push({concepto:c, cantidad:a});
+            localStorage.setItem('fin',JSON.stringify(data));
+            document.getElementById('c').value='';
+            document.getElementById('a').value='';
+            render();
+        }
+
+        function deleteFin(index){
+            data.splice(index,1);
+            localStorage.setItem('fin',JSON.stringify(data));
+            render();
+        }
+
+        function calcTotal(){
+            return data.reduce((sum,item)=>sum+(item.cantidad||0),0).toFixed(2);
+        }
+
+        function render(){
+            document.getElementById('total').textContent=calcTotal();
+            document.getElementById('list').innerHTML=data.map((x,i)=>
+                `<li class="bg-green-50 p-3 rounded-lg flex justify-between items-center">
+                    <div>💵 <strong>${x.concepto}</strong><br><span class="text-green-600">$${x.cantidad}</span></div>
+                    <button onclick="deleteFin(${i})" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm">❌</button>
+                </li>`
+            ).join('');
+        }
+        render();
+    </script>
+</body>
+</html>

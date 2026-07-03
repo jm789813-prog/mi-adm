@@ -1,21 +1,84 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Calendario</title></head>
-<body>
-<h1>Calendario</h1>
-<input id="e">
-<input id="d" type="date">
-<button onclick="add()">Evento</button>
-<ul id="list"></ul>
-<script>
-let data=JSON.parse(localStorage.getItem('cal'))||[];
-function add(){
-data.push(document.getElementById('e').value+' - '+document.getElementById('d').value);
-localStorage.setItem('cal',JSON.stringify(data));
-render();
-}
-function render(){
-document.getElementById('list').innerHTML=data.map(x=>'<li>'+x+'</li>').join('');
-}
-render();
-</script>
-</body></html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario - Mi Admin</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-gradient-to-r from-red-600 to-pink-600 text-white shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">📅 Calendario</h1>
+            <a href="dashboard.html" class="bg-gray-500 hover:bg-gray-600 px-4 py-2 rounded-lg font-semibold">Atrás</a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                <input 
+                    id="e"
+                    type="text"
+                    placeholder="Nombre del evento..."
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                >
+                <input 
+                    id="d"
+                    type="date"
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                >
+            </div>
+
+            <button 
+                onclick="add()"
+                class="w-full bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition mb-6"
+            >
+                🎉 Agregar Evento
+            </button>
+
+            <ul id="list" class="space-y-3"></ul>
+        </div>
+    </main>
+
+    <script>
+        let data=JSON.parse(localStorage.getItem('cal'))||[];
+        
+        function add(){
+            let e=document.getElementById('e').value.trim();
+            let d=document.getElementById('d').value;
+            if(e==='' || d==='') return;
+            data.push({evento:e, fecha:d});
+            data.sort((a,b)=>new Date(a.fecha)-new Date(b.fecha));
+            localStorage.setItem('cal',JSON.stringify(data));
+            document.getElementById('e').value='';
+            document.getElementById('d').value='';
+            render();
+        }
+
+        function deleteEvent(index){
+            data.splice(index,1);
+            localStorage.setItem('cal',JSON.stringify(data));
+            render();
+        }
+
+        function formatDate(dateStr){
+            const date=new Date(dateStr+'T00:00:00');
+            return date.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+        }
+
+        function render(){
+            document.getElementById('list').innerHTML=data.map((x,i)=>
+                `<li class="bg-red-50 p-4 rounded-lg flex justify-between items-center border-l-4 border-red-600">
+                    <div>
+                        <p class="font-bold text-lg">${x.evento}</p>
+                        <p class="text-gray-600 text-sm">📍 ${formatDate(x.fecha)}</p>
+                    </div>
+                    <button onclick="deleteEvent(${i})" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm">❌</button>
+                </li>`
+            ).join('');
+        }
+        render();
+    </script>
+</body>
+</html>

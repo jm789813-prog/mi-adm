@@ -1,24 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Dashboard</title>
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Mi Admin</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-<h1>Dashboard</h1>
-<button onclick="logout()">Salir</button>
-<ul>
-<li><a href="escuela.html">Escuela</a></li>
-<li><a href="finanzas.html">Finanzas</a></li>
-<li><a href="pendientes.html">Pendientes</a></li>
-<li><a href="calendario.html">Calendario</a></li>
-</ul>
-<script>
-function logout(){
-localStorage.removeItem('sesion');
-location.href='index.html';
-}
-</script>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-bold">📊 Mi Admin</h1>
+            <button 
+                onclick="logout()" 
+                class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg font-semibold transition"
+            >
+                🚪 Salir
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Escuela -->
+            <a href="escuela.html" class="group">
+                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition p-6 text-center group-hover:scale-105 transform">
+                    <div class="text-4xl mb-3">🎓</div>
+                    <h2 class="text-xl font-bold text-gray-800 group-hover:text-blue-600">Escuela</h2>
+                    <p class="text-gray-600 text-sm mt-2">Gestiona materias</p>
+                </div>
+            </a>
+
+            <!-- Finanzas -->
+            <a href="finanzas.html" class="group">
+                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition p-6 text-center group-hover:scale-105 transform">
+                    <div class="text-4xl mb-3">💰</div>
+                    <h2 class="text-xl font-bold text-gray-800 group-hover:text-green-600">Finanzas</h2>
+                    <p class="text-gray-600 text-sm mt-2">Control de gastos</p>
+                </div>
+            </a>
+
+            <!-- Pendientes -->
+            <a href="pendientes.html" class="group">
+                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition p-6 text-center group-hover:scale-105 transform">
+                    <div class="text-4xl mb-3">✅</div>
+                    <h2 class="text-xl font-bold text-gray-800 group-hover:text-orange-600">Pendientes</h2>
+                    <p class="text-gray-600 text-sm mt-2">Tu lista de tareas</p>
+                </div>
+            </a>
+
+            <!-- Calendario -->
+            <a href="calendario.html" class="group">
+                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition p-6 text-center group-hover:scale-105 transform">
+                    <div class="text-4xl mb-3">📅</div>
+                    <h2 class="text-xl font-bold text-gray-800 group-hover:text-red-600">Calendario</h2>
+                    <p class="text-gray-600 text-sm mt-2">Eventos importantes</p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        function logout(){
+            if(confirm('¿Deseas cerrar sesión?')){
+                localStorage.removeItem('sesion');
+                location.href='index.html';
+            }
+        }
+
+        // Verificar sesión
+        window.addEventListener('load', () => {
+            if(!localStorage.getItem('sesion')){
+                location.href='index.html';
+            }
+        });
+    </script>
 </body>
 </html>
