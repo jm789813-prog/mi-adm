@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Escuela</title></head>
+<body>
+<h1>Escuela</h1>
+<input id="m" placeholder="Materia">
+<button onclick="add()">Agregar</button>
+<ul id="list"></ul>
+<script>
+let data=JSON.parse(localStorage.getItem('mat'))||[];
+function add(){
+let v=document.getElementById('m').value;
+data.push(v);
+localStorage.setItem('mat',JSON.stringify(data));
+render();
+}
+function render(){
+document.getElementById('list').innerHTML=data.map(x=>'<li>'+x+'</li>').join('');
+}
+render();
+</script>
+</body></html>

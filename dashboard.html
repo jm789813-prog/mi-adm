@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1>Dashboard</h1>
+<button onclick="logout()">Salir</button>
+<ul>
+<li><a href="escuela.html">Escuela</a></li>
+<li><a href="finanzas.html">Finanzas</a></li>
+<li><a href="pendientes.html">Pendientes</a></li>
+<li><a href="calendario.html">Calendario</a></li>
+</ul>
+<script>
+function logout(){
+localStorage.removeItem('sesion');
+location.href='index.html';
+}
+</script>
+</body>
+</html>

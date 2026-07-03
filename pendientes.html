@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Pendientes</title></head>
+<body>
+<h1>Pendientes</h1>
+<input id="t">
+<button onclick="add()">+</button>
+<ul id="list"></ul>
+<script>
+let data=JSON.parse(localStorage.getItem('pen'))||[];
+function add(){
+data.push(document.getElementById('t').value);
+localStorage.setItem('pen',JSON.stringify(data));
+render();
+}
+function render(){
+document.getElementById('list').innerHTML=data.map(x=>'<li>'+x+'</li>').join('');
+}
+render();
+</script>
+</body></html>

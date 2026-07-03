@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Finanzas</title></head>
+<body>
+<h1>Finanzas</h1>
+<input id="c" placeholder="Concepto">
+<input id="a" type="number" placeholder="Cantidad">
+<button onclick="add()">Agregar</button>
+<ul id="list"></ul>
+<script>
+let data=JSON.parse(localStorage.getItem('fin'))||[];
+function add(){
+data.push(document.getElementById('c').value+' $'+document.getElementById('a').value);
+localStorage.setItem('fin',JSON.stringify(data));
+render();
+}
+function render(){
+document.getElementById('list').innerHTML=data.map(x=>'<li>'+x+'</li>').join('');
+}
+render();
+</script>
+</body></html>

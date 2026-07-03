@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Calendario</title></head>
+<body>
+<h1>Calendario</h1>
+<input id="e">
+<input id="d" type="date">
+<button onclick="add()">Evento</button>
+<ul id="list"></ul>
+<script>
+let data=JSON.parse(localStorage.getItem('cal'))||[];
+function add(){
+data.push(document.getElementById('e').value+' - '+document.getElementById('d').value);
+localStorage.setItem('cal',JSON.stringify(data));
+render();
+}
+function render(){
+document.getElementById('list').innerHTML=data.map(x=>'<li>'+x+'</li>').join('');
+}
+render();
+</script>
+</body></html>
